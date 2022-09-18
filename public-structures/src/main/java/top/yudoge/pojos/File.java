@@ -23,16 +23,18 @@ public class File implements ResourceEntry {
         return name;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override
     public void setSize(String size) {
         this.size = size;
     }
 
     @Override
-    public String size() {
+    public String getSize() {
         return this.size;
     }
 

@@ -1,5 +1,9 @@
 package top.yudoge.repository;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +57,12 @@ public class ResourceRepositoryTest {
         ));
         resource.setDirectory(directory);
         repository.save(resource);
+        JsonMapper mapper = new JsonMapper();
+        try {
+            System.out.println(mapper.writeValueAsString(resource));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test

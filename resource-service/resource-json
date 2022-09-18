@@ -1,0 +1,43 @@
+{
+	"url": "https://pan.baidu.com/s/11Cl9l3XMDTIhdTni9xDRlw",
+	"code": "ex57",
+	"title": "Analog Obession",
+	"bio": "Analog Obsession是由一个个人开发者——Rıdvan Küçük——撑起的数字音频处理插件品牌，曾经是付费插件，现在完全免费。\n",
+	"price": 10,
+	"publisherId": 1,
+	"publisher": {
+		"nick": "Yudoge",
+		"email": "1355265122@qq.com"
+	},
+	"lastCheckTime": "2022-09-18T07:22:10.814Z",
+	"checkPending": false,
+	"state": "OK",
+	"saleCount": 7,
+	"refundCount": 0,
+	"directory": {
+		"name": "Analog Obession",
+		"size": "487MB",
+		"children": [{
+				"name": "Analog Obession.7z",
+				"size": "487MB"
+			},
+			{
+				"name": "更多资源",
+				"size": "12KB",
+				"children": [{
+						"name": "更多链接.html",
+						"size": "12KB"
+					},
+					{
+						"name": "解压密码.txt",
+						"size": "24B"
+					}
+				],
+			},
+			{
+				"name": "README.md",
+				"size": "51KB"
+			}
+		]
+	}
+},

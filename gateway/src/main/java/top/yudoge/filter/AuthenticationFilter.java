@@ -10,6 +10,7 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+import top.yudoge.constants.Constants;
 import top.yudoge.pojos.User;
 import top.yudoge.service.UserService;
 
@@ -37,7 +38,7 @@ public class AuthenticationFilter implements GlobalFilter {
             try {
                 User authenticatedUser = userService.authentication(token);
                 if (authenticatedUser != null) {
-                    ServerHttpRequest newReq = exchange.getRequest().mutate().header("authenticated_uid", authenticatedUser.getId().toString()).build();
+                    ServerHttpRequest newReq = exchange.getRequest().mutate().header(Constants.AUTHENTICATED_UID, authenticatedUser.getId().toString()).build();
                     return chain.filter(exchange.mutate().request(newReq).build());
                 }
             } catch (Exception e) {

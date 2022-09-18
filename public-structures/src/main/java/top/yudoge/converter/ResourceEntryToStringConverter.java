@@ -47,7 +47,7 @@ public class ResourceEntryToStringConverter implements Converter<ResourceEntry, 
         sb.append(entry.getName());
         sb.append(" ");
         sb.append("[");
-        sb.append(entry.size());
+        sb.append(entry.getSize());
         sb.append("]\n");
 
         if (!entry.isDirectory()) return;

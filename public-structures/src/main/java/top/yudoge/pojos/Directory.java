@@ -10,7 +10,9 @@ public class Directory implements ResourceEntry {
     private String size;
     private List<ResourceEntry> children;
 
-    public Directory() {}
+    public Directory() {
+        this.children = new ArrayList<>();
+    }
 
     public Directory(String name, String size) {
         this(name, size, new ArrayList<>());
@@ -29,6 +31,7 @@ public class Directory implements ResourceEntry {
         return Boolean.TRUE;
     }
 
+    @Override
     public void setName(String name) {
         this.name = name;
     }
@@ -37,13 +40,13 @@ public class Directory implements ResourceEntry {
     public String getName() {
         return this.name;
     }
-
+    @Override
     public void setSize(String size) {
         this.size = size;
     }
 
     @Override
-    public String size() {
+    public String getSize() {
         return this.size;
     }
 
