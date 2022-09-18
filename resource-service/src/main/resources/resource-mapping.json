@@ -1,0 +1,37 @@
+{
+  "mappings": {
+    "properties": {
+      "id": {
+        "type": "keyword",
+        "index": false
+      },
+      "title": {
+        "type": "text",
+        "analyzer": "ik_smart"
+      },
+      "bio": {
+        "type": "text",
+        "analyzer": "ik_smart"
+      },
+      "price": {
+        "type": "integer"
+      },
+      "publishTime": {
+        "type": "date"
+      },
+      "publisher": {
+        "type": "keyword"
+      },
+      "lastCheckTime": {
+        "type": "date"
+      },
+      "saleCount": {
+        "type": "integer"
+      },
+      "refundCount": {
+        "type": "integer"
+      },
+      ""
+    }
+  }
+}

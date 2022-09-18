@@ -1,0 +1,24 @@
+server:
+  port: 8090
+spring:
+  data:
+    mongodb:
+      database: share_resource
+      authentication-database: admin
+      host: localhost
+      port: 27017
+      username: root
+      password: root
+
+  rabbitmq:
+    listener:
+      simple:
+        prefetch: 100
+    virtual-host: /
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+elasticsearch:
+  host: localhost:9201

@@ -1,0 +1,9 @@
+authentication:
+  white-list:
+    # 用户登录
+    - POST:/user/login
+    # 用户注册
+    - PUT:/user
+    # 根据id获取用户
+    - GET:/user/\d+
+    - GET:/resource/\S+

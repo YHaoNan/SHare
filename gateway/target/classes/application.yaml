@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: resource-service
+          uri: lb://resource-service
+          predicates:
+            - Path=/resource/**
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/user/**
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: root
+    url: jdbc:mysql://localhost:33306/share_user
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+server:
+  port: 80
