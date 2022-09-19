@@ -46,7 +46,8 @@ public class ResourceDoc {
         doc.bio = resource.getBio();
         doc.price = resource.getPrice();
         doc.publishTime = resource.getPublishTime();
-        doc.publisher = resource.getPublisher().getNick();
+        if (resource.getPublisher() != null)
+            doc.publisher = resource.getPublisher().getNick();
         doc.lastCheckTime = resource.getLastCheckTime();
         doc.saleCount = resource.getSaleCount();
         doc.refundCount = resource.getRefundCount();

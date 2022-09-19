@@ -52,6 +52,6 @@ public class ResourceServiceTest {
                         new File("README.md", "51KB")
                 )
         ));
-        service.publish(resource);
+        service.publish(1l, resource);
     }
 }

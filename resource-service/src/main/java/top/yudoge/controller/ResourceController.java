@@ -15,6 +15,7 @@ public class ResourceController {
     @Autowired
     private ResourceService resourceService;
 
+
     @GetMapping("/{id}")
     public ResponseObject getById(@PathVariable("id") String id) {
         return ResponseObjectBuilder.success(resourceService.getById(id)).build();
@@ -23,11 +24,22 @@ public class ResourceController {
     @PutMapping
     public ResponseObject publish(@RequestBody Resource resource,
                                   @RequestHeader(Constants.AUTHENTICATED_UID) Long uid) {
-        if (resource.getPublisherId() != uid)
-            throw new UserAuthenticatException("No permission!");
-        resourceService.publish(resource);
+        resourceService.publish(uid, resource);
         return ResponseObjectBuilder.success().build();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseObject delete(@PathVariable("id") String id,
+                                 @RequestHeader(Constants.AUTHENTICATED_UID) Long uid) {
+        resourceService.delete(uid, id);
+        return ResponseObjectBuilder.success().build();
+    }
+
+    @PostMapping
+    public ResponseObject update(@RequestBody Resource resource,
+                                 @RequestHeader(Constants.AUTHENTICATED_UID) Long uid) {
+        resourceService.updateById(uid, resource);
+        return ResponseObjectBuilder.success().build();
+    }
 
 }
