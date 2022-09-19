@@ -1,0 +1,46 @@
+{
+	"url": "https://pan.baidu.com/s/11Cl9l3XMDTIhdTni9xDRlw",
+	"code": "ex57",
+	"title": "Analog Obession",
+	"bio": "Analog Obsession是由一个个人开发者——Rıdvan Küçük——撑起的数字音频处理插件品牌，曾经是付费插件，现在完全免费。\n\nRıdvan Küçük是一个硬件设计师，也是一个音乐家，他提供了数十款品质极高的免费插件，大多是模拟硬件设备的插件，其中也不乏一些创意插件。\n\n可惜，他并没有提供一个打包下载的渠道，所有人必须逐个下载插件，而且插件所托管的存储平台在国外，对于有些用户来说，下载插件可能是一个问题。\n\n现在，我把它们全部的插件打包成一个压缩包，你可以一次性下载它们！",
+	"price": 10,
+	"publishTime": null,
+	"publisherId": 1,
+	"publisher": {
+		"nick": "Yudoge",
+		"email": "1355265122@qq.com"
+	},
+	"lastCheckTime": 1663491961253,
+	"checkPending": false,
+	"state": "OK",
+	"saleCount": 7,
+	"refundCount": 0,
+	"directory": {
+		"name": "Analog Obession",
+		"size": "489MB",
+		"children": [{
+			"name": "Analog Obession",
+			"size": "489MB",
+			"children": [{
+				"name": "Analog Obession.7z",
+				"size": "489MB",
+				"directory": false,
+				"children": null
+			}],
+			"directory": true
+		}, {
+			"name": "README.md",
+			"size": "302B",
+			"directory": false,
+			"children": null
+		}, {
+			"name": ".DB_Store",
+			"size": "10B",
+			"directory": false,
+			"children": null
+		}],
+		"directory": true
+	},
+    "netdiskType": 1,
+    "totalSize": "512753664"
+}
