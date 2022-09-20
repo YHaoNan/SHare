@@ -5,10 +5,10 @@ import java.util.List;
 public class File implements ResourceEntry {
 
     private String name;
-    private String size;
+    private Long size;
 
     public File() {}
-    public File(String name, String size) {
+    public File(String name, Long size) {
         this.name = name;
         this.size = size;
     }
@@ -29,12 +29,12 @@ public class File implements ResourceEntry {
     }
 
     @Override
-    public void setSize(String size) {
+    public void setSize(Long size) {
         this.size = size;
     }
 
     @Override
-    public String getSize() {
+    public Long getSize() {
         return this.size;
     }
 

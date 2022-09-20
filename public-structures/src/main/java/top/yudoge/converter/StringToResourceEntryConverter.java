@@ -43,7 +43,8 @@ public class StringToResourceEntryConverter implements Converter<String, Resourc
                 int thisLevel = matcher.group(1).length();
                 boolean isDirectory = matcher.group(2).equals("\\D");
                 String name = matcher.group(3);
-                String size = matcher.group(4);
+                Long size = Long.parseLong(matcher.group(4));
+
 
                 // 创建当前Entry
                 ResourceEntry entry = isDirectory ? new Directory(name, size) : new File(name, size);

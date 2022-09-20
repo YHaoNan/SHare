@@ -7,18 +7,18 @@ import java.util.stream.Collectors;
 public class Directory implements ResourceEntry {
 
     private String name;
-    private String size;
+    private Long size;
     private List<ResourceEntry> children;
 
     public Directory() {
         this.children = new ArrayList<>();
     }
 
-    public Directory(String name, String size) {
+    public Directory(String name, Long size) {
         this(name, size, new ArrayList<>());
     }
 
-    public Directory(String name, String size, List<ResourceEntry> children) {
+    public Directory(String name, Long size, List<ResourceEntry> children) {
         this.name = name;
         this.size = size;
         this.children = children;
@@ -41,12 +41,12 @@ public class Directory implements ResourceEntry {
         return this.name;
     }
     @Override
-    public void setSize(String size) {
+    public void setSize(Long size) {
         this.size = size;
     }
 
     @Override
-    public String getSize() {
+    public Long getSize() {
         return this.size;
     }
 

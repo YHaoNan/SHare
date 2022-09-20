@@ -11,8 +11,8 @@ public interface ResourceEntry {
     Boolean isDirectory();
     String getName();
     void setName(String name);
-    String getSize();
-    void setSize(String size);
+    Long getSize();
+    void setSize(Long size);
     List<ResourceEntry> getChildren();
     void addChild(ResourceEntry child);
 }

@@ -1,11 +1,14 @@
 package top.yudoge.pojos;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.sun.istack.internal.NotNull;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 import top.yudoge.constants.ResourceState;
 
@@ -17,8 +20,9 @@ import java.util.Date;
  */
 @Data
 @Document("resource")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Resource {
-    @MongoId
+    @MongoId(FieldType.OBJECT_ID)
     private String id;
     private String url;
     private String code;

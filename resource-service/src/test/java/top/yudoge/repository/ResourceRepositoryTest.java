@@ -1,8 +1,6 @@
 package top.yudoge.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -67,7 +65,7 @@ public class ResourceRepositoryTest {
 
     @Test
     void testGet() {
-        Optional<Resource> resource = repository.findById("6326c722c3d02c40211985c7");
+        Optional<Resource> resource = repository.findById("63293791d154e96932057d04");
         Assertions.assertTrue(resource.isPresent());
         System.out.println(resource.get());
     }

@@ -27,7 +27,7 @@ public class ResourceEntryDeserializer extends JsonDeserializer {
             entry = new File();
         }
         entry.setName(node.get("name").asText());
-        entry.setSize(node.get("size").asText());
+        entry.setSize(node.get("size").asLong());
         return entry;
     }
     @Override

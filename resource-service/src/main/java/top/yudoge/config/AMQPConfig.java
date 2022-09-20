@@ -1,6 +1,8 @@
 package top.yudoge.config;
 
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import top.yudoge.constants.Exchanges;
@@ -33,4 +35,10 @@ public class AMQPConfig {
         return BindingBuilder.bind(resourceEmailNotifyQueue()).to(resourceExchange()).with(RoutingKeys.RESOURCE_PUBLISH_EMAIL_NOTIFY).noargs();
     }
 
+
+    @Bean
+    public MessageConverter messageConverter() {
+
+        return new Jackson2JsonMessageConverter();
+    }
 }

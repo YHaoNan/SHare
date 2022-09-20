@@ -46,7 +46,9 @@ public class DefaultUserService implements UserService {
 
     @Override
     public User getUser(Long id) {
-        return userRepository.selectById(id);
+        User user = userRepository.selectById(id);
+        if (user == null) throw new UserNotFoundException("No user [id=" + id +"]");
+        return user;
     }
 
     @Override

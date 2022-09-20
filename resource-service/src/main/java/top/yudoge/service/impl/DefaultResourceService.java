@@ -1,5 +1,6 @@
 package top.yudoge.service.impl;
 
+import com.baomidou.mybatisplus.extension.api.R;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.index.query.TermQueryBuilder;
@@ -57,7 +58,13 @@ public class DefaultResourceService implements ResourceService {
         resource.setPublishTime(new Date());
         resourceRepository.save(resource);
         resourceDocRepository.save(ResourceDoc.fromResource(resource));
-        rabbitTemplate.convertAndSend(Exchanges.RESOURCE_TOPIC, RoutingKeys.RESOURCE_PUBLISH_ALL, resource.getId());
+
+        // 发布消息，只发布id、url和提取码，因为其它的也用不上
+        Resource resourceMessage = new Resource();
+        resourceMessage.setId(resource.getId());
+        resourceMessage.setUrl(resource.getUrl());
+        resourceMessage.setCode(resource.getCode());
+        rabbitTemplate.convertAndSend(Exchanges.RESOURCE_TOPIC, RoutingKeys.RESOURCE_PUBLISH_ALL, resourceMessage);
     }
 
 
