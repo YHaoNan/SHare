@@ -1,6 +1,7 @@
 package top.yudoge.service;
 
 import top.yudoge.pojos.User;
+import top.yudoge.pojos.UserSnap;
 
 public interface UserService {
     /**
@@ -34,5 +35,26 @@ public interface UserService {
      * @throws 数据库抛出的异常
      */
     void update(User user);
+
+    /**
+     * 用户支付金币
+     * @param uid     支付用户
+     * @param amount  支付金额
+     * @throws top.yudoge.exceptions.UserNotFoundException 如果用户不存在
+     * @throws PayFaildException 如果支付失败
+     * @return 成功返回实际支付额，失败抛出PayFaildException
+     */
+    Long payCoin(Long uid, Long amount);
+
+    /**
+     * 用户赚取金币
+     * @param uid     赚取用户
+     * @param amount  赚取金额
+     * @throws top.yudoge.exceptions.UserNotFoundException 如果用户不存在
+     * @return 成功返回实际赚取额，失败抛出EarnFaildException
+     */
+    Long earnCoin(Long uid, Long amount);
+
+    UserSnap getUserSnapById(Long uid);
 
 }

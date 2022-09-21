@@ -46,4 +46,31 @@ public class UserController {
         ).build();
     }
 
+    /**
+     * 指定用户支付金币，该方法仅向微服务群提供，不向用户提供
+     * @param   uid     要支付的用户id
+     * @param   amount  支付金额，不能为负数
+     * @return  若操作成功，返回200，并在data里携带实际扣减的金额，若失败，返回对应状态码
+     */
+    @GetMapping("/payCoin/{id}/{amount}")
+    public ResponseObject payCoin(@PathVariable("id") Long uid, @PathVariable("amount") Long amount) {
+        return ResponseObjectBuilder.success(userService.payCoin(uid, amount)).build();
+    }
+
+    /**
+     * 指定用户赚取金币，该方法仅向微服务群提供，不向用户提供
+     * @param   uid     要支付的用户id
+     * @param   amount  赚取金额，不能为负数
+     * @return  若操作成功，返回200，并在data里携带实际赚取的金额，若失败，返回对应状态码
+     */
+    @GetMapping("/earnCoin/{id}/{amount}")
+    public ResponseObject earnCoin(@PathVariable("id") Long uid, @PathVariable("amount") Long amount) {
+        return ResponseObjectBuilder.success(userService.earnCoin(uid, amount)).build();
+    }
+
+    @GetMapping("/usersnap/{id}")
+    public ResponseObject userSnap(@PathVariable("id") Long uid) {
+        return ResponseObjectBuilder.success(userService.getUser(uid)).build();
+    }
+
 }

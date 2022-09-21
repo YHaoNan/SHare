@@ -23,7 +23,7 @@ public class ResourceController {
      *          否则，返回404状态码
      */
     @GetMapping("/{id}")
-    public ResponseObject getById(@PathVariable("id") String id) {
+    public ResponseObject<Resource, Object> getById(@PathVariable("id") String id) {
         return ResponseObjectBuilder.success(resourceService.getById(id)).build();
     }
 

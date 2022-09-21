@@ -7,6 +7,7 @@ import lombok.Data;
  */
 @Data
 public class UserSnap {
+    private Long id;
     private String nick;
     private String email;
 }

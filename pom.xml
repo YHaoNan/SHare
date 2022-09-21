@@ -13,6 +13,7 @@
         <module>user-service</module>
         <module>public-structures</module>
         <module>resource-service</module>
+        <module>order-service</module>
     </modules>
 
     <parent>

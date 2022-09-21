@@ -5,11 +5,11 @@ import lombok.Data;
 import java.util.HashMap;
 
 @Data
-public class ResponseObject {
+public class ResponseObject<D, A> {
     protected ResponseObject(){}
     private Integer code;
-    private Object data;
-    private Object attachment;
+    private D data;
+    private A attachment;
     private boolean successed;
 
     public void setCode(Integer code) {

@@ -9,6 +9,7 @@
         <module name="resource-service" />
         <module name="user-service" />
         <module name="public-structures" />
+        <module name="order-service" />
         <module name="gateway" />
       </profile>
     </annotationProcessing>
