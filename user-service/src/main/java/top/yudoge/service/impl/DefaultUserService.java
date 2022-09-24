@@ -16,6 +16,8 @@ import top.yudoge.utils.AuthenticationUtils;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -110,5 +112,10 @@ public class DefaultUserService implements UserService {
         UserSnap snap = userRepository.selectUserSnapById(uid);
         if (snap == null) throw new UserNotFoundException("User not found");
         return snap;
+    }
+
+    @Override
+    public List<User> getByIdSet(Set<Long> ids) {
+        return userRepository.selectByIdSet(ids);
     }
 }

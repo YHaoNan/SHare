@@ -10,8 +10,11 @@ import top.yudoge.pojos.*;
 import top.yudoge.repository.impl.BuyOrderRepository;
 import top.yudoge.repository.impl.SaleOrderRepository;
 import top.yudoge.service.OrderService;
+import top.yudoge.utils.CoinUtils;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class DefaultOrderService implements OrderService {
@@ -26,7 +29,7 @@ public class DefaultOrderService implements OrderService {
     private ResourceClient resourceClient;
 
 
-    private <T> T getFromResponseObjectIfSuccessed(ResponseObject responseObject, Class<T> tclz, RuntimeException e) {
+    private <T> T getFromResponseObjectIfSuccessed(ResponseObject responseObject, RuntimeException e) {
         if (responseObject.getCode() != 200) {
             throw e;
         }
@@ -34,67 +37,88 @@ public class DefaultOrderService implements OrderService {
         return (T) responseObject.getData();
     }
 
+
+    private void requireFirstNthElementNotNull(Collection c, int count, RuntimeException e) {
+        if (c.size() < count) throw e;
+        int counter = 0;
+        for (Object o : c) {
+            if (counter == count) break;
+            if (o == null) throw e;
+            counter++;
+        }
+    }
+
     @Override
     public void take(Long uid, Order order) {
         /**
-         * 0. 获取资源信息
-         * 1. 生成唯一订单ID
-         * 2. 获取消费者，重新计算消费者和售出者的coin
-         * 3. 生成消费者订单，生成售出者订单
-         * 4. 重新设置二者的coin
-         * 5. [-] 购买者购买数++，消费者消费数++，资源卖出数++
-         * 5. 提交或回滚
+         * 0. 获取资源信息                                 1
+         * 1. 获取购买者信息                               2    1，2可以捏成一步
+         * 2. 获取售出者信息                               3
+         * 3. 生成唯一订单ID
+         * 4. 重新计算消费者和售出者的coin
+         * 5. 生成消费者订单                              4
+         * 6. 生成售出者订单                              5
+         * 7. 重新设置交易双方的coin、buyCount、saleCount   6    捏成一步
+         * 8. 重新设置资源卖出数                           7
+         * 9. 提交或回滚
          */
 
-        /**
-         * order需要有：
-         *  {
-         *      resource {
-         *          id
-         *      }
-         *      counterPart {
-         *          id
-         *      }
-         *  }
-         *  resource{
-         *      id
-         *  },
-         *
-         */
 
         PayFaildException e = new PayFaildException("Pay faild");
         if (uid == null) throw e;
 
-        Resource resource = getFromResponseObjectIfSuccessed(resourceClient.getById(order.getResource().getId()), Resource.class, e);
+
+        // 获取资源
+        Resource resource = getFromResponseObjectIfSuccessed(resourceClient.getById(order.getResource().getId()), e);
+
+        // 获取购买者和销售者
+        List<User> participants = getFromResponseObjectIfSuccessed(userClient.getByIdSet(uid + "," + resource.getPublisherId()), e);
+        requireFirstNthElementNotNull(participants, 2, e);
+
+        int buyerIdx = participants.get(0).getId() == uid ? 0 : 1;
+        int sallerIdx = participants.get(0).getId() == uid ? 1 : 0;
+        User buyer = participants.get(buyerIdx);
+        User saller = participants.get(sallerIdx);
+
+        // 生成订单id
         String id = new ObjectId().toHexString();
-        Long buyerCost = getFromResponseObjectIfSuccessed(userClient.payCoin(uid, resource.getPrice()), Long.class, e);
-        Long sallerCost = getFromResponseObjectIfSuccessed(userClient.earnCoin(resource.getPublisherId(), resource.getPrice()), Long.class, e);
 
-        ResourceSnap snap = new ResourceSnap();
-        snap.setId(resource.getId());
-        snap.setTitle(resource.getTitle());
-        snap.setPrice(resource.getPrice());
+        // 计算并设置实际的花费和赚取金额以及salecount和buycount
+        Long buyerRealCost = CoinUtils.calculateRealCost(buyer, resource.getPrice());
+        Long sallerRealEarn = CoinUtils.calculateRealEarn(saller, resource.getPrice());
+        CoinUtils.decreaseCoinAndIncreaseBuyCount(buyer, buyerRealCost, e);
+        CoinUtils.increaseCoinAndIncreaseSaleCount(saller, sallerRealEarn, e);
 
+        // 生成资源快照，用于稍后创建订单
+        ResourceSnap resourceSnap = ResourceSnap.fromResource(resource);
+
+        // 创建订单
         Order buyerOrder = new Order();
         buyerOrder.setId(id);
         buyerOrder.setUid(uid);
-        buyerOrder.setResource(snap);
-        buyerOrder.setRealAmount(buyerCost);
-        buyerOrder.setCounterPart(resource.getPublisher());
+        buyerOrder.setResource(resourceSnap);
+        buyerOrder.setRealAmount(buyerRealCost);
+        buyerOrder.setCounterPart(UserSnap.fromUser(saller));
         buyerOrder.setCreateTime(new Date());
-
-        UserSnap buyer = getFromResponseObjectIfSuccessed(userClient.userSnap(uid), UserSnap.class, e);
 
         Order sallerOrder = new Order();
         sallerOrder.setId(id);
         sallerOrder.setUid(resource.getPublisherId());
-        sallerOrder.setResource(snap);
-        sallerOrder.setRealAmount(sallerCost);
-        sallerOrder.setCounterPart(buyer);
+        sallerOrder.setResource(resourceSnap);
+        sallerOrder.setRealAmount(sallerRealEarn);
+        sallerOrder.setCounterPart(UserSnap.fromUser(buyer));
         buyerOrder.setCreateTime(new Date());
 
         buyOrderRepository.save(buyerOrder);
         saleOrderRepository.save(sallerOrder);
+
+        // 更新资源卖出数
+        resource.setSaleCount(resource.getSaleCount() + 1);
+        resourceClient.update(resource, resource.getPublisherId());
+
+        // 更新用户
+        userClient.update(buyer, buyer.getId());
+        userClient.update(saller, saller.getId());
     }
 
     @Override

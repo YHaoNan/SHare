@@ -8,6 +8,9 @@ import org.apache.ibatis.annotations.Update;
 import top.yudoge.pojos.User;
 import top.yudoge.pojos.UserSnap;
 
+import java.util.List;
+import java.util.Set;
+
 @Mapper
 public interface UserRepository extends BaseMapper<User> {
     @Select("SELECT id, nick, email FROM tb_user WHERE id=#{id}")
@@ -21,8 +24,15 @@ public interface UserRepository extends BaseMapper<User> {
     @Select("SELECT sale_count, sale_return_count, coin FROM tb_user WHERE id=#{id}")
     User selectSaleAndReturnCountById(Long id);
 
+    @Select("<script>" +
+             "SELECT id, nick, email, coin, vip_expire_time, buy_count, buy_return_count, sale_count, sale_return_count FROM tb_user WHERE id IN " +
+            "<foreach item=\"id\" collection=\"idset\" open=\"(\" separator=\",\" close=\")\">#{id}</foreach>"+
+            "</script>")
+    List<User> selectByIdSet(@Param("idset") Set<Long> idset);
+
     @Update("UPDATE tb_user SET coin = #{coin} WHERE id = #{id}")
     int updateUserCoin(@Param("id") Long id, @Param("coin") Long coin);
+
 
 
 }

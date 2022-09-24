@@ -1,9 +1,8 @@
 package top.yudoge.clients;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import top.yudoge.constants.Constants;
 import top.yudoge.pojos.Resource;
 import top.yudoge.pojos.ResponseObject;
 import top.yudoge.pojos.ResponseObjectBuilder;
@@ -19,4 +18,7 @@ public interface ResourceClient {
      */
     @GetMapping("/{id}")
     ResponseObject<Resource, Object> getById(@PathVariable("id") String id);
+    @PostMapping
+    ResponseObject update(@RequestBody Resource resource,
+                                 @RequestHeader(Constants.AUTHENTICATED_UID) Long uid);
 }

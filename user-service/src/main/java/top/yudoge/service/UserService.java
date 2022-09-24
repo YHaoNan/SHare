@@ -3,6 +3,9 @@ package top.yudoge.service;
 import top.yudoge.pojos.User;
 import top.yudoge.pojos.UserSnap;
 
+import java.util.List;
+import java.util.Set;
+
 public interface UserService {
     /**
      * 注册
@@ -56,5 +59,7 @@ public interface UserService {
     Long earnCoin(Long uid, Long amount);
 
     UserSnap getUserSnapById(Long uid);
+
+    List<User> getByIdSet(Set<Long> ids);
 
 }
