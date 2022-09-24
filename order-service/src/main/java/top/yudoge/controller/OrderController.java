@@ -1,14 +1,11 @@
 package top.yudoge.controller;
 
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import top.yudoge.pojos.Order;
 import top.yudoge.pojos.ResponseObject;
 import top.yudoge.pojos.ResponseObjectBuilder;
 import top.yudoge.service.OrderService;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/order")
@@ -21,4 +18,12 @@ public class OrderController {
         orderService.take(uid, order);
         return ResponseObjectBuilder.success().build();
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseObject refundOrder(@PathVariable("id") String orderid,
+                                      @RequestHeader("authenticated_uid") Long uid){
+        orderService.refund(uid, orderid);
+        return ResponseObjectBuilder.success().build();
+    }
+
 }

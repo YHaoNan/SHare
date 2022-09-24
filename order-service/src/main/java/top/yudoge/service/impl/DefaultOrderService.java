@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import top.yudoge.clients.ResourceClient;
 import top.yudoge.clients.UserClient;
 import top.yudoge.exceptions.PayFaildException;
+import top.yudoge.exceptions.RefundFaildException;
 import top.yudoge.pojos.*;
 import top.yudoge.repository.impl.BuyOrderRepository;
 import top.yudoge.repository.impl.SaleOrderRepository;
@@ -122,6 +123,44 @@ public class DefaultOrderService implements OrderService {
     }
 
     @Override
-    public void refund(Long uid, Order order) {
+    public void refund(Long uid, String orderId) {
+        /**
+         * 1. 获取交易双方
+         * 2. 获取交易双方订单
+         * 3. 获取交易资源
+         * 4. 修改双方退款数和coin
+         * 5. 删除双方订单，并添加到退款订单中(暂不实现退款订单)
+         * 6. 修改资源退款数
+         */
+
+        RefundFaildException e = new RefundFaildException("Refund faild");
+
+        Order buyerOrder = buyOrderRepository.getById(orderId);
+        Order sallerOrder = saleOrderRepository.getById(orderId);
+
+        List<User> participants = getFromResponseObjectIfSuccessed(userClient.getByIdSet(buyerOrder.getUid() + "," + sallerOrder.getUid()), e);
+        requireFirstNthElementNotNull(participants, 2, e);
+        int buyerIdx = participants.get(0).getId() == uid ? 0 : 1;
+        int sallerIdx = participants.get(0).getId() == uid ? 1 : 0;
+
+        User buyer = participants.get(buyerIdx);
+        User saller = participants.get(sallerIdx);
+        Resource resource = getFromResponseObjectIfSuccessed(resourceClient.getById(buyerOrder.getResource().getId()), e);
+
+        resource.setRefundCount(resource.getRefundCount() + 1);
+        resourceClient.update(resource, resource.getPublisherId());
+
+        buyer.setBuyReturnCount(buyer.getBuyReturnCount() + 1);
+        saller.setSaleReturnCount(saller.getSaleReturnCount() + 1);
+        buyer.setCoin(buyer.getCoin() + buyerOrder.getRealAmount());
+        // 这里可能出现负数，毕方铺的处理策略是余额可以出现负数，这里是归零，反正虚拟货币
+        saller.setCoin(Math.max(saller.getCoin() - buyerOrder.getRealAmount(), 0));
+
+        userClient.update(buyer, buyer.getId());
+        userClient.update(saller, saller.getId());
+
+        buyOrderRepository.deleteById(buyerOrder.getId());
+        saleOrderRepository.deleteById(sallerOrder.getId());
+
     }
 }
