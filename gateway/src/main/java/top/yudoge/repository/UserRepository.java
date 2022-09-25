@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import top.yudoge.pojos.User;
+import top.yudoge.pojos.UserAndPassword;
 
 @Mapper
 public interface UserRepository extends BaseMapper<User> {
@@ -12,6 +13,6 @@ public interface UserRepository extends BaseMapper<User> {
      * @return
      */
     @Select("SELECT id, email, password FROM tb_user WHERE email=#{email}")
-    User selectIdEmailAndPasswordByEmail(String email);
+    UserAndPassword selectIdEmailAndPasswordByEmail(String email);
 
 }

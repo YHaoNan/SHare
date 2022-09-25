@@ -10,12 +10,18 @@ spring:
           uri: lb://user-service
           predicates:
             - Path=/user/**
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
   datasource:
     hikari:
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: root
       password: root
     url: jdbc:mysql://localhost:33306/share_user
+  cache:
+    type: redis
 
 mybatis-plus:
   configuration:

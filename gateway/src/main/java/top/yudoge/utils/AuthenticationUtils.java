@@ -7,6 +7,7 @@ import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.util.DigestUtils;
 import top.yudoge.pojos.User;
+import top.yudoge.pojos.UserAndPassword;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -37,12 +38,12 @@ public class AuthenticationUtils {
         try {
             DecodedJWT jwt = JWT.decode(token);
             return jwt.getClaim("email").asString();
-        } catch (JWTDecodeException e) {
+        } catch (Exception e) {
             return null;
         }
     }
 
-    public static boolean verifyJWTToken(String token, User user) {
+    public static boolean verifyJWTToken(String token, UserAndPassword user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(user.getPassword());
             JWTVerifier verifier = JWT.require(algorithm)
